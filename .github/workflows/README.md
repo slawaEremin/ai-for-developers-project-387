@@ -1,5 +1,79 @@
-# Automatic tests
+# Проверки GitHub Actions
 
-After completing all the steps in the project, automatic tests will become available to you. Tests are run on each commit - once all tasks in the Hexlet interface are completed, make a commit, and the tests will run automatically.
+## Проверки проекта
 
-The hexlet-check.yml file is responsible for running these tests - do not delete this file, edit it, or rename the repository.
+`check.yml` выполняется на каждый push без ограничений по веткам, тегам и путям. Один job на Ubuntu 24.04 устанавливает инструменты закреплённых версий и зависимости из lock-файлов, затем запускает `make check` и сквозной сценарий Chromium командой `npm run test:e2e`.
+
+Версии Node.js и npm читаются из корневых `.nvmrc` и `package.json` соответственно. Версия uv берётся из `tool.uv.required-version` в `apps/backend/pyproject.toml`; при `uv sync --locked` Python выбирается по `apps/backend/.python-version`. Используемые Actions закреплены полными SHA релизов с версией в комментарии.
+
+`make check` последовательно запускает линтинг Python, Vue и TypeSpec, проверку типов и актуальности генерации, тесты бэкенда и фронтенда, затем сборку фронтенда. Ошибка любого этапа останавливает прогон. После этого CI устанавливает Chromium с системными библиотеками и запускает
+сценарий создания типа → подтверждения гостем → списка владельца на настоящих
+Vue, SDK, FastAPI и PostgreSQL. Он использует отдельную схему БД и очищает только её.
+Docker проверяется отдельно.
+
+CI не вызывает `make setup`: эта команда перегенерирует файлы и может скрыть устаревший контракт, модели или SDK. Вместо неё выполняются `npm ci` в корне и `uv sync --locked` в `apps/backend`. Проверка генерации создаёт результаты во временном каталоге и сравнивает их с сохранёнными файлами, не исправляя расхождения.
+
+Для воспроизведения прогона локально подготовьте версии инструментов по корневому README, выполните те же команды установки зависимостей и `make check`. Сквозной сценарий воспроизводится командами `npx playwright install chromium`
+и `npm run test:e2e`; подробности изоляции — в `apps/frontend/README.md`.
+Для отдельных этапов доступны `make lint`, `make test` и `make build`.
+
+## Релизы приложения
+
+`release-please.yml` запускается отдельно на push в `main` и вручную.
+Action v5.0.0 закреплён полным SHA; запуски идут последовательно без отмены
+текущего. Используется стандартный `GITHUB_TOKEN` с правами `contents`,
+`issues` и `pull-requests` на запись только в этом workflow.
+Общие разрешения репозитория остаются на чтение.
+
+Приложение выпускается целиком со стратегией `simple`. Источник версии —
+корневой `version.txt`; конфигурация и состояние находятся в
+`release-please-config.json` и `.release-please-manifest.json`.
+Версия `0.1.0`, manifest и changelog унаследованы из проекта 386.
+Ссылки changelog ведут на исходные коммиты в репозитории 386.
+`bootstrap-sha` указывает на исходный коммит нового репозитория 387:
+`537b3537825748abd789561170ebf3c05690aecb`, чтобы workflow не искал
+отсутствующую здесь историю проекта 386. Новые релизы учитывают изменения
+после этой точки. `initial-version` задаёт только первый релиз;
+версии внутренних npm/Python-пакетов стратегия не меняет.
+
+Используйте Conventional Commits: `feat: добавить выбор времени`,
+`fix: сохранить ключ попытки`, `perf: ускорить чтение доступности`.
+`feat` увеличивает minor, `fix` и `perf` — patch; `!` или `BREAKING CHANGE:`
+обозначают несовместимость и увеличение major. Changelog группирует новые
+возможности, исправления и оптимизации. Служебные `chore`, `docs` и `test`
+сами не создают релиз. Обычный merge commit сохраняет исходные сообщения.
+
+После изменения `main` workflow создаёт или обновляет один release-PR с новой
+версией, manifest и корневым `CHANGELOG.md`. После просмотра и ручного слияния
+release-PR следующий запуск создаёт тег `v<версия>` и GitHub Release.
+Автоматического слияния и публикации npm/Python-пакетов нет.
+
+Для работы `GITHUB_TOKEN` требуется настройка Settings → Actions → General →
+«Allow GitHub Actions to create and approve pull requests». Она разрешает
+Actions и создание PR, и одобрение ревью; этот workflow сам не одобряет PR.
+При выключенной настройке подготовка release-PR недоступна. Ресурсы,
+созданные `GITHUB_TOKEN`, не запускают другие workflow автоматически;
+CI на бот-PR этой конфигурацией не добавляется.
+
+Проверка релизов в новом репозитории:
+
+1. После изменения приложения найдите успешный запуск `release-please`
+   от события `push` в ветку `main` репозитория 387.
+2. Проверьте один открытый release-PR бота: обновлены `version.txt`, manifest
+   и changelog календаря. Версия вычисляется от унаследованной `0.1.0`.
+3. Повторите запуск через Re-run jobs или Run workflow. Номер release-PR
+   должен сохраниться; второго открытого release-PR быть не должно.
+4. Сохраните ссылки на запуск и release-PR в соответствующей задаче
+   [нового трекера](https://github.com/slawaEremin/ai-for-developers-project-387/issues).
+
+Проверки первого релиза относятся к исходным задачам
+[#17](https://github.com/slawaEremin/ai-for-developers-project-386/issues/17)
+и [#10](https://github.com/slawaEremin/ai-for-developers-project-386/issues/10).
+Остальные исходные спецификации и решения перечислены в
+[истории проекта](../../docs/project-lineage.md).
+
+## Учебные проверки Hexlet
+
+`hexlet-check.yml` управляется Hexlet и запускает учебные проверки на каждый push. Автоматические тесты станут доступны после завершения всех шагов проекта в интерфейсе Hexlet; затем нужно сделать коммит и push.
+
+Не редактируйте и не удаляйте `hexlet-check.yml`, не переименовывайте репозиторий.

@@ -1,0 +1,156 @@
+:root {
+  font-family: Arial, sans-serif;
+  color: #111827;
+  background: #f7f9fc;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  --ink: #111827;
+  --muted: #708198;
+  --accent: #ff6b0b;
+  --pale: #e9eff6;
+  --line: #d5deec;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; min-width: 320px; }
+a { color: inherit; text-decoration: none; }
+button, input, textarea { font: inherit; }
+button { cursor: pointer; color: inherit; }
+button:disabled { cursor: default; }
+svg { display: block; }
+h1, h2, h3, p, figure, dl, dd { margin: 0; }
+h1, h2, h3, p, dd { overflow-wrap: anywhere; }
+h1 { font-size: 30px; line-height: 1.25; }
+h2 { font-size: 20px; line-height: 1.35; }
+p { font-size: 14px; line-height: 1.5; }
+a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 3px solid #c34b00; outline-offset: 3px; }
+h1:focus, h2:focus, main:focus { outline: none; }
+.app-shell { min-height: 100svh; display: flex; flex-direction: column; }
+main { flex: 1; }
+.container { width: min(1120px, calc(100% - 48px)); margin-inline: auto; }
+.skip-link { position: absolute; left: 20px; top: -80px; z-index: 2; background: #fff; padding: 12px; }
+.skip-link:focus { top: 12px; }
+.site-header { border-bottom: 1px solid var(--line); background: #f7f9fc; }
+.header-content { min-height: 60px; display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+.brand { display: inline-flex; align-items: center; gap: 9px; font-size: 16px; font-weight: 700; }
+.brand-mark { width: 20px; height: 20px; color: var(--accent); stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0; }
+nav { display: flex; align-items: center; gap: 8px; }
+.nav-link { padding: 10px 12px; border-radius: 9px; font-size: 14px; color: #60728e; }
+.nav-link:hover, .nav-link[aria-current] { color: var(--ink); background: var(--pale); }
+.button { display: inline-flex; align-items: center; justify-content: center; gap: 12px; min-height: 40px; padding: 10px 18px; border: 1px solid transparent; border-radius: 12px; font-size: 14px; font-weight: 700; line-height: 1.4; text-align: center; transition: background-color 160ms, border-color 160ms; }
+.button-primary { color: #fff; background: var(--accent); }
+.button-primary:hover:not(:disabled) { background: #e65a00; }
+.button-primary:disabled { background: #ffb184; }
+.button-secondary { border-color: var(--line); background: #fff; }
+.button-secondary:hover:not(:disabled) { background: var(--pale); }
+.button-secondary:disabled { color: var(--muted); background: #f3f6fa; }
+.panel { border: 1px solid var(--line); border-radius: 16px; background: #fff; box-shadow: 0 1px 2px #11182708; }
+.muted { color: var(--muted); }
+.app-home main { background: radial-gradient(ellipse 65% 85% at 12% 20%, #bdd6fb 0%, transparent 85%), radial-gradient(ellipse 50% 60% at 80% 0%, #fce0cb 0%, transparent 90%), #f3f6fa; }
+.hero { width: min(1152px, calc(100% - 48px)); margin-inline: auto; display: grid; grid-template-columns: 1fr 1fr; gap: 32px; align-items: stretch; padding-block: 56px; }
+.eyebrow { display: inline-block; padding: 5px 13px; border-radius: 99px; background: #f7f9fc; color: #6c7a8e; font-size: 12px; line-height: 1.2; font-weight: 700; text-transform: uppercase; }
+.hero h1 { margin-top: 20px; font-size: 48px; line-height: 1.2; letter-spacing: -1.5px; }
+.hero-description { max-width: 515px; margin-top: 22px; color: #6b7f99; font-size: 20px; line-height: 1.4; }
+.hero-copy > .button { min-height: 48px; margin-top: 26px; padding-inline: 23px; font-size: 16px; }
+.features { padding: 24px; background: #ffffffd9; }
+.features ul { display: grid; gap: 12px; margin: 16px 0 0; padding: 0; list-style: none; color: var(--muted); font-size: 14px; line-height: 1.5; }
+.features li::before { content: '• '; }
+.booking-page { padding-block: 40px; }
+.catalog-page { max-width: 992px; }
+.catalog-intro { padding: 24px; }
+.host-profile { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.host-avatar { width: 64px; height: 64px; border-radius: 18px; background: #f3f6fa; flex-shrink: 0; padding: 6px; }
+.host-avatar svg { width: 100%; height: 100%; stroke: #708198; stroke-width: 2; stroke-linecap: round; }
+.host-label { min-width: 0; }
+.host-label strong { display: block; overflow-wrap: anywhere; font-size: 16px; line-height: 1.3; }
+.host-label span { display: block; margin-top: 4px; color: var(--muted); font-size: 12px; }
+.catalog-intro h1 { margin-top: 16px; }
+.catalog-intro > p { margin-top: 10px; color: var(--muted); }
+.catalog { margin-top: 32px; }
+.meeting-types { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; margin: 0; padding: 0; list-style: none; }
+.meeting-types > li { min-width: 0; }
+.meeting-type { display: block; height: 100%; padding: 24px; transition: border-color 160ms, box-shadow 160ms; }
+.meeting-type:hover { border-color: var(--accent); box-shadow: 0 2px 8px #1118270a; }
+.meeting-title { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.meeting-title h2 { min-width: 0; font-size: 18px; }
+.duration { flex-shrink: 0; border-radius: 99px; background: var(--pale); color: var(--muted); padding: 4px 8px; font-size: 12px; line-height: 1.4; }
+.meeting-description { white-space: pre-wrap; overflow-wrap: anywhere; }
+.meeting-type .meeting-description { margin-top: 10px; color: var(--muted); }
+.back-home { display: inline-block; margin-top: 24px; color: #60728e; font-size: 14px; }
+.back-home:hover { text-decoration: underline; }
+.feedback { display: grid; align-content: start; gap: 16px; }
+.panel.feedback { padding: 24px; }
+.feedback .button { justify-self: start; }
+.selection-feedback { margin-top: 24px; }
+.booking-title { margin-bottom: 32px; }
+.booking-layout { display: grid; grid-template-columns: 302fr 435fr 335fr; gap: 24px; align-items: stretch; }
+.booking-layout > .panel { min-width: 0; padding: 24px; }
+.booking-details .host-avatar { width: 48px; height: 48px; border-radius: 14px; }
+.booking-details .host-label strong { font-size: 14px; }
+.booking-details .meeting-title { margin-top: 16px; gap: 8px; }
+.booking-details .meeting-title h2 { font-size: 20px; }
+.booking-details .meeting-description { margin-top: 10px; }
+.selection-summary { display: grid; gap: 12px; margin-top: 16px; font-size: 14px; line-height: 1.5; }
+.selection-summary > div { padding: 12px; border-radius: 12px; background: var(--pale); }
+.selection-summary dt { color: var(--muted); }
+.selection-summary dd { margin-top: 4px; }
+.timezone { margin-top: 16px; color: var(--muted); font-size: 12px; }
+.calendar-heading { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.calendar-heading h2, .slots-panel > h2 { font-size: 18px; }
+.month-navigation { display: flex; gap: 8px; }
+.icon-button { display: grid; place-items: center; width: 36px; height: 36px; padding: 0; background: #fff; border: 1px solid var(--line); border-radius: 12px; }
+.icon-button:hover:not(:disabled) { background: var(--pale); }
+.icon-button:disabled { color: #9aa6b7; background: #f7f9fc; }
+.calendar-month { margin-bottom: 24px; }
+.calendar-weekdays, .calendar-grid { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 4px; }
+.calendar-weekdays { margin-bottom: 8px; color: #6c7a8e; font-size: 12px; font-weight: 700; text-align: center; }
+.calendar-day { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; height: 56px; min-width: 0; padding: 3px 0; border: 1px solid #e0e8f2; border-radius: 8px; background: #fff; font-size: 14px; }
+.calendar-day small { font-size: 10px; color: var(--muted); white-space: nowrap; }
+.calendar-day:disabled { background: #f1f5fa; color: var(--muted); }
+.calendar-day.outside-month:not(:disabled) { color: #708198; }
+.calendar-day:hover:not(:disabled), .calendar-day[aria-pressed="true"] { border-color: #f1c5a9; background: #fff4ec; color: var(--ink); }
+.slots-panel { display: flex; flex-direction: column; gap: 18px; }
+.slot-list { display: flex; flex-direction: column; gap: 8px; overflow-y: auto; max-height: 360px; min-height: 0; scrollbar-gutter: stable; }
+.slot-button { display: flex; align-items: center; justify-content: space-between; gap: 8px; flex-shrink: 0; min-height: 46px; width: 100%; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #fff; font-size: 14px; text-align: left; }
+.slot-button strong { font-size: 12px; }
+.slot-button:hover:not(:disabled), .slot-button[aria-pressed="true"] { border-color: var(--accent); background: #fff4ec; }
+.booking-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: auto; padding-top: 2px; }
+.booking-actions .button { min-width: 0; padding-inline: 10px; }
+.review-actions { grid-template-columns: 1fr; }
+.review-summary { line-height: 1.7; }
+.booking-notice { padding: 12px; border-radius: 10px; background: #fff4ec; }
+.error-message { color: #a92b28; }
+.booking-outcome { grid-column: 2 / -1; }
+.owner-page h1, .owner-page h2 { margin-bottom: 16px; }
+
+@media (max-width: 1024px) {
+  .booking-layout { grid-template-columns: minmax(0, 1fr); max-width: 560px; margin-inline: auto; }
+  .booking-outcome { grid-column: auto; }
+  .booking-title { max-width: 560px; margin-inline: auto; }
+  .slot-list { max-height: 360px; }
+}
+@media (max-width: 760px) {
+  .hero { grid-template-columns: minmax(0, 1fr); gap: 32px; padding-block: 36px; }
+  .hero h1 { font-size: 42px; }
+  .hero-description { font-size: 18px; }
+  .features { min-height: 220px; }
+  .meeting-types { grid-template-columns: minmax(0, 1fr); }
+  .booking-page { padding-block: 32px; }
+  .booking-title { font-size: 26px; margin-bottom: 24px; }
+}
+@media (max-width: 400px) {
+  .container, .hero { width: calc(100% - 32px); }
+  .header-content { gap: 8px; }
+  nav { gap: 0; }
+  .nav-link { padding-inline: 8px; font-size: 12px; }
+  .booking-layout > .panel, .catalog-intro, .meeting-type, .features { padding: 16px; }
+  .catalog-intro h1 { font-size: 26px; }
+  .meeting-title { flex-wrap: wrap; gap: 8px; }
+  .calendar-day { height: 52px; font-size: 12px; }
+  .calendar-day small { font-size: 9px; }
+  .calendar-weekdays, .calendar-grid { gap: 3px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; }
+}

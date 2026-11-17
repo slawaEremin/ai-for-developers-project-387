@@ -1,0 +1,57 @@
+name: check
+
+on: push
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-24.04
+    services:
+      postgres:
+        image: postgres:17-bookworm
+        env:
+          POSTGRES_DB: calendar_test
+          POSTGRES_USER: calendar
+          POSTGRES_PASSWORD: calendar
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U calendar -d calendar_test"
+          --health-interval 2s --health-timeout 3s --health-retries 30
+    env:
+      TEST_DATABASE_URL: postgresql://calendar:calendar@127.0.0.1:5432/calendar_test
+    steps:
+      - name: Получить код
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+
+      - name: Установить Node.js
+        uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Установить закреплённый npm
+        run: npm install --global "$(node --print "require('./package.json').packageManager")"
+
+      - name: Установить uv
+        uses: astral-sh/setup-uv@68559e99cc807c1eb7e9238fd43a15bba460eec2 # v10.3.3
+        with:
+          version-file: apps/backend/pyproject.toml
+
+      - name: Установить зависимости JavaScript
+        run: npm ci
+
+      - name: Установить Python и зависимости бэкенда
+        working-directory: apps/backend
+        run: uv sync --locked
+
+      - name: Выполнить все проверки
+        run: make check
+
+      - name: Установить Chromium для сквозного сценария
+        run: npx playwright install --with-deps chromium
+
+      - name: Проверить сквозную запись в настоящем браузере
+        run: npm run test:e2e
