@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.2.0](https://github.com/slawaEremin/ai-for-developers-project-387/compare/v0.1.0...v0.2.0) (2026-11-17)
+
+
+### Новые возможности
+
+* migrate call calendar from project 386 ([1e80c06](https://github.com/slawaEremin/ai-for-developers-project-387/commit/1e80c06e0789352c958107c9e587619131d70867))
+
 ## 0.1.0 (2026-11-12)
 
 
